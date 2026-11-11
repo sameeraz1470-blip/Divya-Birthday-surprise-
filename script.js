@@ -47,28 +47,46 @@ finalButton.addEventListener("click", () => {
   launchConfetti();
 });
 
+
+// Load Divya's birthday background music
+birthdayMusic.src = "Sai%20Pallavis%20Intro.mp3";
+musicToggle.disabled = false;
+musicToggle.textContent = "▶";
+
+// Allow selecting another song if needed
 musicPicker.addEventListener("change", () => {
-  const song = musicPicker.files[0];
-  if (!song) return;
-  birthdayMusic.src = URL.createObjectURL(song);
-  musicToggle.disabled = false;
-  musicToggle.textContent = "▶";
-  birthdayMusic.play().then(() => {
-    musicToggle.textContent = "Ⅱ";
-  }).catch(() => {
-    musicToggle.textContent = "▶";
-  });
+    const song = musicPicker.files[0];
+
+    if (!song) return;
+
+    birthdayMusic.src = URL.createObjectURL(song);
+    musicToggle.disabled = false;
+
+    birthdayMusic.play()
+        .then(() => {
+            musicToggle.textContent = "Ⅱ";
+        })
+        .catch(error => {
+            console.log("Music error:", error);
+        });
 });
 
+// Play and pause button
 musicToggle.addEventListener("click", () => {
-  if (birthdayMusic.paused) {
-    birthdayMusic.play();
-    musicToggle.textContent = "Ⅱ";
-  } else {
-    birthdayMusic.pause();
-    musicToggle.textContent = "▶";
-  }
+    if (birthdayMusic.paused) {
+        birthdayMusic.play()
+            .then(() => {
+                musicToggle.textContent = "Ⅱ";
+            })
+            .catch(error => {
+                console.log("Music error:", error);
+            });
+    } else {
+        birthdayMusic.pause();
+        musicToggle.textContent = "▶";
+    }
 });
+
 
 // Soft floating hearts in the background.
 function createFloatingHeart() {
