@@ -16,34 +16,42 @@ document.addEventListener("DOMContentLoaded", () => {
   const birthdayMusic = document.getElementById("birthdayMusic");
 
 
-  
- // Open birthday surprise and start music
-openSurpriseButton.addEventListener("click", () => {
+  // BIRTHDAY MUSIC SETUP
+  birthdayMusic.src = "./Sai%20Pallavis%20Intro.mp3";
+  birthdayMusic.loop = true;
+  birthdayMusic.preload = "auto";
 
-  surpriseSection.classList.remove("hidden");
+  musicToggle.disabled = false;
+  musicToggle.textContent = "▶";
 
-  surpriseSection.scrollIntoView({
-    behavior: "smooth"
-  });
 
-  launchConfetti();
+  // OPEN SURPRISE AND AUTOMATICALLY PLAY MUSIC
+  openSurpriseButton.addEventListener("click", async () => {
 
-  // Automatically start birthday music
-  birthdayMusic.play()
-    .then(() => {
-      musicToggle.textContent = "Ⅱ";
-    })
-    .catch((error) => {
-      console.log("Music could not start:", error);
+    surpriseSection.classList.remove("hidden");
+
+    surpriseSection.scrollIntoView({
+      behavior: "smooth"
     });
 
-});
+    launchConfetti();
+
+    try {
+      await birthdayMusic.play();
+      musicToggle.textContent = "Ⅱ";
+    } catch (error) {
+      console.log("Music playback error:", error);
+      musicToggle.textContent = "▶";
+    }
+
+  });
 
 
-
-  // Blow the candle
+  // BLOW THE CANDLE
   wishButton.addEventListener("click", () => {
+
     flame.classList.add("out");
+
     cakeCaption.textContent =
       "May every beautiful wish of yours come true, Divya! 💗";
 
@@ -51,11 +59,13 @@ openSurpriseButton.addEventListener("click", () => {
     wishButton.disabled = true;
 
     launchConfetti();
+
   });
 
 
-  // Upload birthday photos
+  // UPLOAD BIRTHDAY PHOTOS
   photoPicker.addEventListener("change", (event) => {
+
     const files = Array.from(event.target.files);
 
     if (files.length === 0) return;
@@ -63,19 +73,24 @@ openSurpriseButton.addEventListener("click", () => {
     gallery.innerHTML = "";
 
     files.forEach((file) => {
+
       if (!file.type.startsWith("image/")) return;
 
       const image = document.createElement("img");
+
       image.alt = "A special memory";
       image.src = URL.createObjectURL(file);
 
       gallery.appendChild(image);
+
     });
+
   });
 
 
-  // Final birthday message
+  // FINAL BIRTHDAY MESSAGE
   finalButton.addEventListener("click", () => {
+
     finalMessage.classList.remove("hidden");
 
     finalMessage.scrollIntoView({
@@ -84,28 +99,21 @@ openSurpriseButton.addEventListener("click", () => {
     });
 
     launchConfetti();
+
   });
 
 
-  // BIRTHDAY BACKGROUND MUSIC
-  birthdayMusic.src = "Sai%20Pallavis%20Intro.mp3";
-  birthdayMusic.loop = true;
-
-  musicToggle.disabled = false;
-  musicToggle.textContent = "▶";
-
-  // Play and pause music
-  musicToggle.addEventListener("click", () => {
+  // PLAY AND PAUSE MUSIC BUTTON
+  musicToggle.addEventListener("click", async () => {
 
     if (birthdayMusic.paused) {
 
-      birthdayMusic.play()
-        .then(() => {
-          musicToggle.textContent = "Ⅱ";
-        })
-        .catch((error) => {
-          console.error("Music playback error:", error);
-        });
+      try {
+        await birthdayMusic.play();
+        musicToggle.textContent = "Ⅱ";
+      } catch (error) {
+        console.error("Music playback error:", error);
+      }
 
     } else {
 
@@ -117,8 +125,8 @@ openSurpriseButton.addEventListener("click", () => {
   });
 
 
-  // Select another song if required
-  musicPicker.addEventListener("change", () => {
+  // SELECT ANOTHER SONG
+  musicPicker.addEventListener("change", async () => {
 
     const song = musicPicker.files[0];
 
@@ -126,24 +134,23 @@ openSurpriseButton.addEventListener("click", () => {
 
     birthdayMusic.src = URL.createObjectURL(song);
 
-    birthdayMusic.play()
-      .then(() => {
-        musicToggle.textContent = "Ⅱ";
-      })
-      .catch((error) => {
-        console.error("Music playback error:", error);
-      });
+    try {
+      await birthdayMusic.play();
+      musicToggle.textContent = "Ⅱ";
+    } catch (error) {
+      console.error("Music playback error:", error);
+    }
 
   });
 
 
-  // Check music loading errors
+  // MUSIC ERROR CHECK
   birthdayMusic.addEventListener("error", () => {
-    console.error("Could not load the birthday music.");
+    console.error("Could not load birthday music. Check the MP3 file path.");
   });
 
 
-  // Floating hearts
+  // FLOATING HEARTS
   function createFloatingHeart() {
 
     const heart = document.createElement("span");
@@ -158,12 +165,13 @@ openSurpriseButton.addEventListener("click", () => {
     document.body.appendChild(heart);
 
     setTimeout(() => heart.remove(), 15000);
+
   }
 
   setInterval(createFloatingHeart, 850);
 
 
-  // Confetti animation
+  // CONFETTI ANIMATION
   function launchConfetti() {
 
     const symbols = ["♥", "✦", "●", "✧"];
@@ -192,6 +200,7 @@ openSurpriseButton.addEventListener("click", () => {
       setTimeout(() => piece.remove(), 5000);
 
     }
+
   }
 
 });
