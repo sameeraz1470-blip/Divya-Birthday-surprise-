@@ -16,12 +16,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const birthdayMusic = document.getElementById("birthdayMusic");
 
 
-  // Open birthday surprise
-  openSurpriseButton.addEventListener("click", () => {
-    surpriseSection.classList.remove("hidden");
-    surpriseSection.scrollIntoView({ behavior: "smooth" });
-    launchConfetti();
+  
+ // Open birthday surprise and start music
+openSurpriseButton.addEventListener("click", () => {
+
+  surpriseSection.classList.remove("hidden");
+
+  surpriseSection.scrollIntoView({
+    behavior: "smooth"
   });
+
+  launchConfetti();
+
+  // Automatically start birthday music
+  birthdayMusic.play()
+    .then(() => {
+      musicToggle.textContent = "Ⅱ";
+    })
+    .catch((error) => {
+      console.log("Music could not start:", error);
+    });
+
+});
+
 
 
   // Blow the candle
